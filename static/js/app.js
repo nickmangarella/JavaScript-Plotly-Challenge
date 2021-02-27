@@ -1,24 +1,44 @@
-function unpack(rows, index) {
-    return rows.map(function(row) {
-      return row[index];
+// Initial function that renders the names to the dropdown
+function init() {
+    d3.json("samples.json").then((importedData) => {
+        createOptions(importedData.names, "selDataset");
     });
-  }
+}
 
-function buildHbar() {
+function createOptions(data, cb_element) {
+    element = document.getElementById(cb_element);
+    for (var i = 0; i < data.length; i++) {
+      var option = document.createElement('option');
+      option.text = data[i];
+      element.appendChild(option);
+    }
+}
+
+// Function to build the plots
+function buildPlots(name) {
+    var dropdownMenu = d3.select("#selDataset");
+    // Assign the value of the dropdown menu option to a variable
+    var dataset = dropdownMenu.property("value");
+    console.log(dataset);
     // Read the JSON file
-    d3.json("data/samples.json").then((data) => {
-
+    d3.json("samples.json").then((importedData) => {        
+        
         // Grab values from the json object to build the plots
-        var sampleValues = unpack(data.samples.sample_values);
-        var otuIds = unpack(data.samples.otu_ids);
-        var otuLabels = unpack(data.samples.otu_labels);
+        var sampleValues = importedData.samples.map(x => x.sample_values);
+        var otuIds = importedData.samples.map(data => data.otu_ids);
+        var otuLabels = importedData.samples.map(data => data.otu_labels);
 
         console.log(sampleValues);
         console.log(otuIds);
         console.log(otuLabels);
 
 
+
     });
 }
+// Call the inital function
+init();
 
-buildHbar();
+// Event to render the corresponding plots to the selected name from the dropdown
+d3.selectAll("#selDataset").on("change", buildPlots);
+
