@@ -17,16 +17,18 @@ function createOptions(data, cb_element) {
 // Function to build the plots
 function buildPlots(name) {
     var dropdownMenu = d3.select("#selDataset");
+    
     // Assign the value of the dropdown menu option to a variable
     var dataset = dropdownMenu.property("value");
     console.log(dataset);
+    
     // Read the JSON file
     d3.json("samples.json").then((importedData) => {        
         
         // Grab values from the json object to build the plots
         var sampleValues = importedData.samples.map(x => x.sample_values);
-        var otuIds = importedData.samples.map(data => data.otu_ids);
-        var otuLabels = importedData.samples.map(data => data.otu_labels);
+        var otuIds = importedData.samples.map(x => x.otu_ids);
+        var otuLabels = importedData.samples.map(x => x.otu_labels);
 
         console.log(sampleValues);
         console.log(otuIds);
@@ -35,6 +37,10 @@ function buildPlots(name) {
 
 
     });
+}
+
+function optionChanged(sample) {
+    buildPlots(sample);
 }
 // Call the inital function
 init();
