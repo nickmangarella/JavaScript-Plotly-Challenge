@@ -1,46 +1,49 @@
-// Function to initialize the plots
+// Function to create sample names in a dropdown menu
 function init() {
-    d3.json("samples.json").then((importedData) => {
+    d3.json("samples.json").then((samplesData) => {
+
+        // Grab the dropdownMenu id
+        var dropdownMenu = d3.select("#selDataset")
 
         // For each sample name append them to the "dropdownMenu"
-        importedData.names.forEach((name) => {
+        samplesData.names.forEach((name) => {
             
-            var dropdownMenu = d3.select("#selDataset").property("value", name);
-            
-            dropdownMenu.append("option").text(name);
+            dropdownMenu.append("option")
+                .text(name)
+                .property("value");
         });
 
-        // Default to the first samples plots when visiting the webpage
-        var name1 = importedData.names[0];
-        buildPlots(name1);
+        // Default to the first sample's plots when visiting the webpage
+        buildPlots(samplesData.names[0]);
     });
 }
 
-// Function to build all plots
-function buildPlots() {
-    d3.json("samples.json").then((importedData) => {
+// Function to build all of the plots
+function buildPlots(sample) {
+    d3.json("samples.json").then((samplesData) => {
 
-        // Simplify the samples object to a variable
-        var samples = importedData.samples;
-
-        // Sort the data by sample values
-        var sortedData = samples.sort((a, b) => parseFloat(b.sample_values) - parseFloat(a.sample_values));
-
-        // Slice the first 10 objects for plotting
-        var slicedData = sortedData.slice(0, 10).reverse();
+        // Grab the sample_values, otu_ids, and otu_labels for a sample
+        var sampleValues = samplesData.samples[0].sample_values.slice(0,10).reverse();
+        var otuIds = samplesData.samples[0].otu_ids.slice(0,10).reverse();
+        var otuLabels = samplesData.samples[0].otu_labels.slice(0,10).reverse();
         
+        console.log(sampleValues);
+        console.log(otuIds);
+        console.log(otuLabels);
+
+
         // Create horizontal bar chart
         var hbar = [{
-            x: slicedData.map(x => x.sample_values),
-            y: slicedData.map(x => x.otu_ids),
-            text: slicedData.map(x => x.otu_labels),
+            x: sampleValues,
+            y: otuIds,
+            text: otuLabels,
             type: "bar",
             orientation: "h"
         }];
 
         // Layout for horizontal bar chart
         var hbarLayout = {
-            group: "barmode"
+            title: "Top 10 OTUs Found"
         };
         
         // Render the plot to the div tag with id "bar"
@@ -55,6 +58,3 @@ function optionChanged(sample) {
 
 // Initialize the webpage plots
 init();
-
-// Event to render the corresponding plots to the selected name from the dropdown
-d3.selectAll("#selDataset").on("change", buildPlots);
