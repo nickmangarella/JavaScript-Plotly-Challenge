@@ -25,7 +25,10 @@ function buildPlots(sample) {
         // Grab the sample_values, otu_ids, and otu_labels for a sample
         var sampleValues = samplesData.samples[0].sample_values.slice(0,10).reverse();
         var otuIds = samplesData.samples[0].otu_ids.slice(0,10).reverse();
-        var otuLabels = samplesData.samples[0].otu_labels.slice(0,10).reverse();
+        var otuLabels = samplesData.samples[0].otu_labels.slice(0,10);
+
+        // Add text to each OTU ID for plotting
+        otuIds = otuIds.map(x => "OTU " + x);
         
         console.log(sampleValues);
         console.log(otuIds);
