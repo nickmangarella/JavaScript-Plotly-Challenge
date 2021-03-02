@@ -23,12 +23,12 @@ function buildPlots(sample) {
     d3.json("samples.json").then((samplesData) => {
 
         // Grab the sample_values, otu_ids, and otu_labels for a sample
-        var sampleValues = samplesData.samples[0].sample_values.slice(0,10).reverse();
-        var otuIds = samplesData.samples[0].otu_ids.slice(0,10).reverse();
-        var otuLabels = samplesData.samples[0].otu_labels.slice(0,10);
+        var sampleValues = samplesData.samples[0].sample_values;
+        var otuIds = samplesData.samples[0].otu_ids;
+        var otuLabels = samplesData.samples[0].otu_labels;
 
         // Add text to each OTU ID for plotting
-        otuIds = otuIds.map(x => "OTU " + x);
+        var idLabels = otuIds.map(x => "OTU " + x);
         
         console.log(sampleValues);
         console.log(otuIds);
@@ -37,20 +37,45 @@ function buildPlots(sample) {
 
         // Create horizontal bar chart
         var hbar = [{
-            x: sampleValues,
-            y: otuIds,
-            text: otuLabels,
+            x: sampleValues.slice(0,10).reverse(),
+            y: idLabels.slice(0,10).reverse(),
+            text: otuLabels.slice(0,10),
             type: "bar",
             orientation: "h"
         }];
 
-        // Layout for horizontal bar chart
         var hbarLayout = {
-            title: "Top 10 OTUs Found"
+            margin: {
+                l: 100,
+                r: 100,
+                t: 0,
+                b: 40
+            }
         };
         
-        // Render the plot to the div tag with id "bar"
+        // Render the hbar chart to the div tag with id "bar"
         Plotly.newPlot("bar", hbar, hbarLayout);
+
+        // Create bubble chart
+        var bubble = [{
+            x: otuIds,
+            y: sampleValues,
+            mode: "markers",
+            marker: {
+                size: sampleValues,
+                color: otuIds
+            },
+            text: otuLabels
+        }];
+
+        // Create the bubble chart layout
+        var bubbleLayout = {
+            height: 600,
+            width: 1200
+        };
+
+        // Render the hbar chart to the div tag with id "bar"
+        Plotly.newPlot("bubble", bubble, bubbleLayout);
     });
 }
 
