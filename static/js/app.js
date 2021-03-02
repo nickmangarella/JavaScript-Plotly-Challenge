@@ -13,8 +13,9 @@ function init() {
                 .property("value");
         });
 
-        // Default to the first sample's plots when visiting the webpage
+        // Default to the first sample's plots and demographic info when visiting the webpage
         buildPlots(samplesData.names[0]);
+        demoInfo(samplesData.names[0]);
     });
 }
 
@@ -79,9 +80,29 @@ function buildPlots(sample) {
     });
 }
 
+// Function to grab each sample's demographic info and display in the chart
+function demoInfo(sample) {
+    d3.json("samples.json").then((samplesData) => {
+        
+        // Select the demographic info chart by div tag id
+        var demoinfoChart = d3.select("#sample-metadata");
+
+        // Get each sample's metadata
+        var sampleMetadata = samplesData.metadata.id;
+        console.log(sampleMetadata);
+
+        // Grab each sample's demo info and append each key value pair
+        Object.entries(samplesMetadata).forEach(function([key,value]) {
+            demoinfoChart.append("p")
+                .text(`${key}: ${value}`);
+        });
+    });
+}
+
 // Function to call the buildPlots function in the HTML
 function optionChanged(sample) {
     buildPlots(sample);
+    demoInfo(sample);
 }
 
 // Initialize the webpage plots
