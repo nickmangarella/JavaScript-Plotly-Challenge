@@ -88,13 +88,16 @@ function demoInfo(sample) {
         var demoinfoChart = d3.select("#sample-metadata");
 
         // Get each sample's metadata
-        var sampleMetadata = samplesData.metadata.id;
-        console.log(sampleMetadata);
+        samplesData.metadata.forEach((sampleId) => {
+            var samplesMetadata = sampleId.id;
+        console.log(samplesMetadata);
+        });
 
         // Grab each sample's demo info and append each key value pair
-        Object.entries(samplesMetadata).forEach(function([key,value]) {
+        Object.entries(samplesMetadata).forEach(([key, value]) => {
             demoinfoChart.append("p")
                 .text(`${key}: ${value}`);
+            console.log(demoinfoChart);
         });
     });
 }
