@@ -21,7 +21,7 @@ function init() {
 
 // Function to build all of the plots
 function buildPlots(sample) {
-    d3.json("samples.json").then((samplesData) => {
+    d3.json("/data/samples.json").then((samplesData) => {
 
         // Grab the sample_values, otu_ids, and otu_labels for a sample
         var sampleValues = samplesData.samples[0].sample_values;
@@ -46,6 +46,7 @@ function buildPlots(sample) {
         }];
 
         var hbarLayout = {
+            title: "Top 10 OTUs",
             margin: {
                 l: 100,
                 r: 100,
