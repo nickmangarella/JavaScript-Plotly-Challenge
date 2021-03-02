@@ -87,17 +87,16 @@ function demoInfo(sample) {
         // Select the demographic info chart by div tag id
         var demoinfoChart = d3.select("#sample-metadata");
 
-        // Get each sample's metadata
-        samplesData.metadata.forEach((sampleId) => {
-            var samplesMetadata = sampleId.id;
-        console.log(samplesMetadata);
-        });
+        // Clear the demographic info with each ID selection
+        demoinfoChart.html("");
 
-        // Grab each sample's demo info and append each key value pair
-        Object.entries(samplesMetadata).forEach(([key, value]) => {
+        // Get each sample's metadata by filtering each id
+        var samplesMetadata = samplesData.metadata.filter(x => x.id == sample)[0];
+
+        // Grab each filtered object's key, value pairs and append a paragraph tag with the data as text
+        Object.entries(samplesMetadata).forEach(function([key,value]) {
             demoinfoChart.append("p")
                 .text(`${key}: ${value}`);
-            console.log(demoinfoChart);
         });
     });
 }
