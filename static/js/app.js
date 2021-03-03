@@ -1,4 +1,4 @@
-// Function to create sample names in a dropdown menu
+// Function to create sample names in a dropdown menu and initialize plots
 function init() {
     d3.json("/data/samples.json").then((samplesData) => {
 
@@ -19,14 +19,17 @@ function init() {
     });
 }
 
-// Function to build all of the plots
+// Function to build the horizontal bar chart and bubble chart
 function buildPlots(sample) {
     d3.json("/data/samples.json").then((samplesData) => {
 
-        // Grab the sample_values, otu_ids, and otu_labels for a sample
-        var sampleValues = samplesData.samples[0].sample_values;
-        var otuIds = samplesData.samples[0].otu_ids;
-        var otuLabels = samplesData.samples[0].otu_labels;
+        // Filter the samples by ID
+        var filteredData = samplesData.samples.filter(x => x.id == sample);
+
+        // Grab the sample_values, otu_ids, and otu_labels for each sample
+        var sampleValues = filteredData[0].sample_values;
+        var otuIds = filteredData[0].otu_ids;
+        var otuLabels = filteredData[0].otu_labels;
 
         // Add text to each OTU ID for plotting
         var idLabels = otuIds.map(x => "OTU " + x);
@@ -75,10 +78,10 @@ function buildPlots(sample) {
         var bubbleLayout = {
             xaxis: {title: "OTU ID"},
             height: 600,
-            width: 1200
+            width: 1150
         };
 
-        // Render the hbar chart to the div tag with id "bar"
+        // Render the bubble chart to the div tag with id "bubble"
         Plotly.newPlot("bubble", bubble, bubbleLayout);
     });
 }
