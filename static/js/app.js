@@ -51,7 +51,7 @@ function buildPlots(sample) {
             margin: {
                 l: 100,
                 r: 100,
-                t: 0,
+                t: 30,
                 b: 40
             }
         };
@@ -73,6 +73,7 @@ function buildPlots(sample) {
 
         // Create the bubble chart layout
         var bubbleLayout = {
+            xaxis: {title: "OTU ID"},
             height: 600,
             width: 1200
         };
