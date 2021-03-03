@@ -1,6 +1,6 @@
 // Function to create sample names in a dropdown menu
 function init() {
-    d3.json("samples.json").then((samplesData) => {
+    d3.json("/data/samples.json").then((samplesData) => {
 
         // Grab the dropdownMenu id
         var dropdownMenu = d3.select("#selDataset")
@@ -44,7 +44,8 @@ function buildPlots(sample) {
             type: "bar",
             orientation: "h"
         }];
-
+        
+        // Create the hbar chart layout
         var hbarLayout = {
             title: "Top 10 OTUs",
             margin: {
@@ -83,7 +84,7 @@ function buildPlots(sample) {
 
 // Function to grab each sample's demographic info and display in the chart
 function demoInfo(sample) {
-    d3.json("samples.json").then((samplesData) => {
+    d3.json("/data/samples.json").then((samplesData) => {
         
         // Select the demographic info chart by div tag id
         var demoinfoChart = d3.select("#sample-metadata");
